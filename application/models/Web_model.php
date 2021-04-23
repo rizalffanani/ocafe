@@ -27,13 +27,13 @@ class Web_model extends CI_Model
     
     function get_all_menu()
     {
-        return $this->db->get("menu1")->result();
+        return $this->db->get("listmenu")->result();
     }
     
     function get_by_id($id)
     {
         $this->db->where("id_menu", $id);
-        return $this->db->get("menu1")->row();
+        return $this->db->get("listmenu")->row();
     }    
 
     function get_by_idkat($id)
@@ -56,10 +56,6 @@ class Web_model extends CI_Model
     function get_all_user()
     {
         return $this->db->get("user")->result();
-    }
-    function get_all_slider()
-    {
-        return $this->db->get("slider")->result();
     }
 
     function insert($data){

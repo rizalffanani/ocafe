@@ -24,11 +24,10 @@ class Web extends CI_Controller
         $menu           = $this->Web_model->get_all_menu();
         $order          = $this->Web_model->get_all_order();
         $order_detail   = $this->Web_model->get_all_order_detail();
-        $slide           = $this->Web_model->get_all_slider();
 
-        $b  = array('slide' => $slide, 'kategori' => $kategori, 'menu' => $menu, 'order' => $order, 'order_detail' => $order_detail);
+        $b  = array('kategori' => $kategori, 'menu' => $menu, 'order' => $order, 'order_detail' => $order_detail);
 
-        $this->template->load('v_web','frontend/home', $b);
+        $this->template->load('front','frontend/home', $b);
     }    
     public function ce()
     {
@@ -37,7 +36,7 @@ class Web extends CI_Controller
     function chart()
     {
         $b = array();
-        $this->template->load('v_web','frontend/cart', $b);
+        $this->template->load('front','frontend/cart', $b);
     }
     function add_to_cart($id,$qty){ //fungsi Add To Cart
 
@@ -96,7 +95,7 @@ class Web extends CI_Controller
     }   
 
     function tyi($value=''){
-        $this->load->view('v_web');
+        $this->load->view('front');
     }
 
     function simpan(){
@@ -146,7 +145,7 @@ class Web extends CI_Controller
         $order = $this->Web_model->get_all_where('order','id_order', $id);
         $order_detail = $this->Web_model->get_all_where('order_detail','id_order', $id);
         $b = array('order'=>$order->row(),'detail'=>$order_detail->result());
-        $this->template->load('v_web','frontend/ckt', $b);
+        $this->template->load('front','frontend/ckt', $b);
     }
 }
 

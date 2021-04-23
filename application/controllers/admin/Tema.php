@@ -8,6 +8,7 @@ class Tema extends CI_Controller
     function __construct()
     {
         parent::__construct();
+        $this->authclass->check_isvalidated(base_url());
         $this->load->model('Tema_model');
         $this->load->library('form_validation');        
 	$this->load->library('datatables');
