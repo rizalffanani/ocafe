@@ -26,16 +26,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <script src="<?php  echo (base_url());?>assets/backend/plugins/toastr/toastr.min.js"></script>
 
 </head>
-<body class="hold-transition layout-top-nav">
+<body class="hold-transition layout-top-nav layout-navbar-fixed">
 <div class="wrapper">
 
   <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand-md navbar-dark navbar-orange">
+  <nav class="main-header navbar navbar-expand-md navbar-light navbar-white" style="height: 200px;">
     <div class="container">
       <a href="<?php echo site_url('web') ?>" class="navbar-brand">
         <img src="<?php echo base_url(); ?>assets/img/<?= $infoweb->logo_web?>" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-             style="opacity: .8">
-        <span class="brand-text font-weight-light"><?= $infoweb->nama_web?></span>
+             style="opacity: .8;height: 150px;">
+        <!-- <span class="brand-text font-weight-light"><?= $infoweb->nama_web?></span> -->
       </a>
       
       <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,7 +49,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <a href="<?php echo site_url('web') ?>" class="nav-link">Home</a>
           </li>
           <li class="nav-item">
-            <a href="<?php echo site_url('login') ?>" class="nav-link">Login</a>
+            <a href="<?php echo site_url('login') ?>" class="nav-link"><i class="fas fa-sign-in-alt" aria-hidden="true"></i></a>
           </li>
         </ul>
 
@@ -70,7 +70,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
         <!-- Notifications Dropdown Menu -->
         <li class="nav-item dropdown">
-          <a class="nav-link" href="<?php  echo (base_url());?>web/chart">
+          <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#">
             <i class="fas fa-shopping-cart"></i>
             <span id="count" style="<?php $count=count($this->cart->contents()); if ($count<0) {?>display: none !important;<?php }?>" class="badge badge-warning navbar-badge"><?php echo($count>0) ? $count : 0 ;?></span>
           </a>
@@ -87,21 +87,124 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- /.content-wrapper -->
 
   <!-- Control Sidebar -->
-  <!-- <aside class="control-sidebar control-sidebar-dark">
-    <div class="p-3">
-      <h5>Title</h5>
-      <p>Sidebar content</p>
+  <aside class="control-sidebar control-sidebar-dark" style="overflow: auto;border: 1px solid #17a2b8;height: 100%;width: 500px;background: white;position: fixed;">
+    <div class="p-3" style="margin-top: 200px">
+      <h5 style="color: black">Keranjang Belanja</h5>
+      <table class="table">
+            <tbody id="body-tabel" style="color: black;">
+            <?php $i = 1;$b=0; $keid = array(); foreach($this->cart->contents() as $key) : ?>
+              <tr class="text-center" id="table<?= $key['rowid']; ?>">
+                <td style="vertical-align: middle;">
+                  <button type="button" onclick="hapus('<?= $key['rowid']; ?>')" class="btn btn-block btn-danger" data-type="plus" data-field="">X</button>
+                </td>
+                <td style="vertical-align: middle;width: 130px;"><?= $key['name']?></td>
+                <input type="hidden" id="price<?= $key['rowid']; ?>" value="<?= $key['price']?>">
+        
+                <td style="vertical-align: middle;">
+                  <button type="button" onclick="kurang('<?= $key['rowid']; ?>')" style='width: 30px;float: left;' class="btn btn-block btn-info"  data-type="minus" data-field="">-</button>
+                  <input type="number" value="<?= $key['qty']?>" id="quantity<?= $key['rowid']; ?>" style='width: 50px;float: left;'  class="form-control " name="quantity"  value="1" min="1" max="100">
+                  <button type="button" onclick="tambah('<?= $key['rowid']; ?>')" style='width: 30px;float: left;' class="btn btn-block btn-info" data-type="plus" data-field="">+</button>
+                </td>
+                
+                <td style="vertical-align: middle;" id="sb<?= $key['rowid']; ?>">Rp.<?= rupiah($key['subtotal'])?></td>
+              </tr><!-- END TR-->
+            <?php $i++;endforeach; ?>
+            </tbody>
+      </table>
+      <h5 style="color: black">Total 
+        <span id="totals" style="float: right;">Rp.<?php echo rupiah($this->cart->total()); ?></span>
+      </h5>
     </div>
-  </aside> -->
+    <script type="text/javascript">
+        $(function() {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+          });
+        });
+        function hapus(a) {
+          $.ajax({
+            type:"GET",
+            dataType : "JSON",
+            url:"<?=site_url('web/hapus_cart');?>/"+a,    
+            success: function(data){   
+              document.getElementById('count').style.display = "block";
+              document.getElementById('count').innerHTML = data.jml;
+              document.getElementById('table'+a).innerHTML = "<tr></tr>";   
+              document.getElementById('totals').innerHTML = "Rp."+data.format;
+            }  
+          });
+        }
+        function tambah(a) {
+          var quantity = parseInt($('#quantity'+a).val());
+          var qty = quantity + 1;
+          var price = parseInt($('#price'+a).val());
+              $('#quantity'+a).val(qty);
+              document.getElementById('sb'+a).innerHTML="Rp."+(qty*price);
+              update(a,qty);
+        }
+        function kurang(a) {
+          var quantity = parseInt($('#quantity'+a).val());
+          var qty = quantity - 1;
+          var price = parseInt($('#price'+a).val());
+              // Increment
+              if(quantity>1){
+              $('#quantity'+a).val(qty);
+              document.getElementById('sb'+a).innerHTML="Rp."+(qty*price);
+              update(a,qty);
+              }
+        }
+        function update(a,b) {
+          $.ajax({
+            type:"GET",
+            url:"<?=site_url('web/update_cart');?>/"+a+'/'+b,  
+            dataType : "JSON",    
+            success: function(data){   
+              document.getElementById('totals').innerHTML = "Rp."+data.format;   
+            }  
+          });
+        }
+    </script>
+  </aside>
   <!-- /.control-sidebar -->
 
   <!-- Main Footer -->
-  <footer class="main-footer">
-    <!-- To the right -->
-    <div class="float-right d-none d-sm-inline">
-      Anything you want
+  <footer class="main-footer bg-navy">
+    <div class="row">
+      <div class="col-sm-4 col-md-1 "></div>
+      <div class="col-sm-4 col-md-8 ">
+        <div class="card-body">
+          <strong>Follow Instagram Kami </strong>
+        </div>
+      </div>
+      <div class="col-sm-4 col-md-3 ">
+        <div class="card-body">
+          <a href="https://www.instagram.com/cafewarna2020/">
+            <img style="height: 40px;" src="<?php  echo (base_url());?>assets/img/instagram.png">
+            <strong style="color: white;"><?= $infoweb->nama_web?></strong>
+          </a>
+        </div>
+      </div>
     </div>
-    <!-- Default to the left -->
+  </footer>
+  <footer class="main-footer ">
+    <div class="row invoice-info">
+      <div class="col-sm-1 invoice-col">
+      </div>
+      <div class="col-sm-4 invoice-col">
+        <address>
+          <strong><?= $infoweb->nama_web?></strong><br>
+          Gedung H4 Fakultas Teknik <br>
+          Universitas Negeri Malang. <br>
+          Jalan Sematang No. 5, Malang, <br>
+          Jawa Timur
+        </address>
+      </div>
+    </div>
+  </footer>
+  <footer class="main-footer text-center">
     <strong>Copyright &copy; <?= date("Y")?> <a href="<?php echo site_url('dashboard') ?>"><?= $infoweb->nama_web?></a>.</strong> All rights reserved.
   </footer>
 </div>

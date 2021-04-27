@@ -200,7 +200,7 @@ class Listmenu extends CI_Controller
 	$this->form_validation->set_rules('nama_menu', 'nama menu', 'trim|required');
 	$this->form_validation->set_rules('harga', 'harga', 'trim|required');
 	$this->form_validation->set_rules('id_kategori', 'id kategori', 'trim|required');
-	$this->form_validation->set_rules('deskripsi_menu', 'deskripsi menu', 'trim|required');
+	// $this->form_validation->set_rules('deskripsi_menu', 'deskripsi menu', 'trim|required');
 	// $this->form_validation->set_rules('foto_menu', 'foto menu', 'trim|required');
 	$this->form_validation->set_rules('status', 'status', 'trim|required');
 
