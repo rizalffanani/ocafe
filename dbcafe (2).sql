@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 12, 2021 at 05:58 AM
+-- Generation Time: Apr 27, 2021 at 09:54 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.2
 
@@ -48,7 +48,9 @@ INSERT INTO `auth_assignment` (`id_assignment`, `id_aunt`, `item_name`, `user_id
 (5, 3, 'User', '9', '2020-08-23 21:51:43'),
 (6, 2, 'Kasir', '10', '2020-08-23 22:13:02'),
 (7, 2, 'Kasir', '12', '2020-09-09 11:20:29'),
-(8, 6, 'siswa', '13', '2020-10-01 09:14:38');
+(8, 6, 'siswa', '13', '2020-10-01 09:14:38'),
+(9, 3, 'User', '14', '2021-04-22 15:26:32'),
+(10, 3, 'User', '2', '2021-04-27 12:51:34');
 
 -- --------------------------------------------------------
 
@@ -72,8 +74,7 @@ CREATE TABLE `auth_item` (
 INSERT INTO `auth_item` (`id_aunt`, `name`, `tipe`, `description`, `created_at`, `updated_at`) VALUES
 (1, 'Admin', 1, 'hak akses admin', NULL, NULL),
 (2, 'Kasir', 1, 'hak akses kasir', NULL, NULL),
-(3, 'User', 1, 'Hak akses diatas admin', NULL, NULL),
-(6, 'siswa', 1, 'hak akses siswa', '2020-10-01 09:13:43', NULL);
+(3, 'User', 1, 'Hak akses diatas admin', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -116,9 +117,16 @@ INSERT INTO `auth_item_child` (`idc`, `id_aunt`, `parent`, `child`) VALUES
 (77, 1, 'Admin', '78'),
 (79, 1, 'Admin', '79'),
 (80, 6, 'siswa', '12'),
-(85, 1, 'Admin', '12'),
 (86, 1, 'Admin', '80'),
-(87, 1, 'Admin', '81');
+(87, 1, 'Admin', '81'),
+(88, 1, 'Admin', '47'),
+(90, 3, 'User', '61'),
+(91, 3, 'User', '62'),
+(92, 3, 'User', '63'),
+(93, 1, 'Admin', '74'),
+(95, 3, 'User', '82'),
+(96, 1, 'Admin', '83'),
+(97, 1, 'Admin', '84');
 
 -- --------------------------------------------------------
 
@@ -142,7 +150,7 @@ CREATE TABLE `info` (
 --
 
 INSERT INTO `info` (`id_info`, `nama_web`, `tentang`, `slogan`, `alamat`, `email`, `wa`, `logo_web`) VALUES
-(1, 'OCafe', 'Cafe', 'Ocafe', 'Jalan', 'ocafe@gmail.com', '0813-3378-2544', '1file_12042021101644.png');
+(1, 'Cafe Warna', 'Cafe', 'Ocafe', 'Jalan', 'ocafe@gmail.com', '0813-3378-2544', '1file_25042021153149.jpg');
 
 -- --------------------------------------------------------
 
@@ -162,8 +170,9 @@ CREATE TABLE `kategori` (
 INSERT INTO `kategori` (`id_kategori`, `nama_kategori`) VALUES
 (1, 'Makanan'),
 (2, 'Minuman'),
-(3, 'Camilan'),
-(4, 'Dessert');
+(3, 'Sepinggan'),
+(4, 'Snack'),
+(5, 'Lain - Lain');
 
 -- --------------------------------------------------------
 
@@ -186,17 +195,54 @@ CREATE TABLE `listmenu` (
 --
 
 INSERT INTO `listmenu` (`id_menu`, `nama_menu`, `harga`, `id_kategori`, `deskripsi_menu`, `foto_menu`, `status`) VALUES
-(1, 'Nasi Ayam Sambal Matah', '13000', 1, 'Nasi dengan ayam crispy ditaburi sambal matah. Sambal tradisional dari Bali yang terdiri dari irisan bawang merah, cabai, sereh, dan daun jeruk.', '806file_26042020061734.jpg', 'ready'),
-(2, 'Nasi Ayam Saus Salted Egg', '13000', 1, 'Nasi dengan ayam crispy dilumuri saus salted egg (telur asin), dengan tekstur yang creamy dan rasa yang gurih.', '569file_26042020061705.jpg', 'habis'),
-(3, 'Nasi Ayam Saus Asam Manis', '13000', 1, 'Nasi dengan ayam crispy dilumuri saus asam manis, yang terdiri dari saus, bawang bombay, nanas, dan wortel.', '602file_26042020061634.jpg', 'ready'),
-(4, 'Banana Coffee', '10000', 2, 'Kopi dengan cita rasa yang unik dan legit dari ekstrak buah pisang.', '895file_26042020061606.jpg', 'habis'),
-(5, 'Tarlet', '10000', 2, 'Minuman unik dari Pickupme, dengan menggabungkan dua varian rasa yaitu Taro dan Redvelvet menjadi satu.', '528file_26042020061518.jpg', 'habis'),
-(7, 'kentang', '10000', 3, 'kentang goreng istimewa', '959file_23042020054033.jpg', 'ready'),
-(8, 'Tiramissu', '25000', 4, 'Kue keju khas Italia dengan taburan bubuk kakao di atasnya, dessert yang lembut manis.', '367file_08072020031921.jpg', 'ready'),
-(9, 'gfhfgh', '7665', 1, 'jgj', '15file_12042021105206.jpg', 'ready'),
-(10, 'tes', '90000', 1, 'jhgkg', 'default.png', 'ready'),
-(11, 'fvgfddf', '90000', 1, 'fgjfj', 'default.png', 'ready'),
-(12, 'kas', '9789', 1, 'jiojoji', '182file_12042021104931.png', 'ready');
+(1, 'I\'am Penyet / Ayam Penyet', '12000', 1, '', '338file_25042021152817.jpg', 'ready'),
+(2, 'Lele Penyet', '10000', 1, '', '158file_25042021152725.jpg', 'habis'),
+(3, 'Nasi Goreng DJ ( Daun Jeruk)', '10000', 1, '', '774file_25042021152640.jpg', 'ready'),
+(4, 'Nasi Goreng Teman (Teri Medan)', '11000', 1, '', '638file_25042021152544.jpg', 'habis'),
+(5, 'Nasi Goreng Millenial (Sambal Matah)', '11000', 1, '', '354file_25042021152432.jpg', 'habis'),
+(7, 'Nasi Goreng Jawa', '10000', 1, '', '509file_25042021152300.jpg', 'ready'),
+(8, 'Bakmi Gak Basah / Dibasahin', '11000', 1, '', '612file_25042021152157.jpg', 'ready'),
+(9, 'Bihun Gak Basah', '7000', 1, '', '48file_25042021152109.jpg', 'ready'),
+(10, 'Cap Cay', '9000', 1, '', '795file_25042021152008.jpg', 'ready'),
+(11, 'Cakung (Cah Kangkung)', '8000', 1, '', '717file_25042021151933.jpg', 'ready'),
+(12, 'Plengkung (Plecing Kangkung)', '8000', 1, '', '529file_25042021151859.jpg', 'ready'),
+(13, 'Cahto (Cah Tauge)', '8000', 1, '', '752file_25042021151818.jpg', 'ready'),
+(14, 'Teh (Hangat/Dingin)', '3000', 2, '', '833file_25042021151513.jpg', 'ready'),
+(15, 'Jeruk (Hangat/Dingin)', '4000', 2, '', '524file_25042021151411.jpg', 'ready'),
+(16, 'Jeruk Nipis (Hangat/Dingin)', '4000', 2, '', '809file_25042021151215.png', 'ready'),
+(17, 'Lemon Tea (Hangat/Dingin)', '5000', 2, '', '811file_25042021151629.jpeg', 'ready'),
+(18, 'Milo', '5000', 2, '', '327file_25042021150756.png', 'ready'),
+(19, 'Kopi Susu (Hangat/Dingin)', '5000', 2, '', '721file_25042021150706.jpg', 'ready'),
+(20, 'Cappucino (Hangat/Dingin)', '5000', 2, '', '881file_25042021150500.jpg', 'ready'),
+(21, 'Jus Tomat', '6000', 2, '', '294file_25042021150347.jpg', 'ready'),
+(22, 'Jus Melon', '7000', 2, '', '559file_25042021150322.jpg', 'ready'),
+(23, 'Jus Semangka', '7000', 2, '', '618file_25042021150247.jpg', 'ready'),
+(24, 'Jus Nanas', '7000', 2, '', '691file_25042021150121.jpg', 'ready'),
+(25, 'Jus Wortel', '7000', 2, '', '965file_25042021150019.jpg', 'ready'),
+(26, 'Mix Juice (Min. 3 Macam Buah)', '9000', 2, '', '60file_25042021145909.jpg', 'ready'),
+(27, 'Es Kopyor', '5000', 2, '', '398file_25042021145833.jpg', 'ready'),
+(28, 'Air Meniral', '2500', 2, '', '35file_25042021145731.png', 'ready'),
+(29, 'Fruit Tea Pouch', '2500', 2, '', '962file_25042021145648.jpg', 'ready'),
+(30, 'Teh Sosro Pouch', '2500', 2, '', '153file_25042021145554.jpg', 'ready'),
+(31, 'Tebs', '5000', 2, '', '724file_25042021145424.jpg', 'ready'),
+(32, 'Roojak So To (Rujak Soto)', '12000', 3, '', '106file_25042021145317.jpg', 'ready'),
+(33, 'Soto I am (Soto Ayam)', '10000', 3, '', '821file_25042021145229.jpg', 'ready'),
+(34, 'Fancy Tofu (Tahu Telur)', '10000', 3, '', '834file_25042021145200.jpg', 'ready'),
+(35, 'Javanesse Salad (Gado-Gado)', '10000', 3, '', '264file_25042021145054.jpg', 'ready'),
+(36, 'See Black', '10000', 3, '', '929file_25042021145012.jpg', 'ready'),
+(37, 'Ceker', '1000', 3, '', '582file_25042021144621.jpg', 'ready'),
+(38, 'Pilus', '1000', 3, '', '355file_25042021144539.jpg', 'ready'),
+(39, 'French Fries', '8000', 4, '', '134file_25042021144444.jpeg', 'ready'),
+(40, 'Cireng', '6000', 4, '', '271file_25042021144415.jpg', 'ready'),
+(41, 'Pisang Goreng', '1000', 4, '', '449file_25042021144209.jpg', 'ready'),
+(42, 'Ote - Ote/ Weci', '1000', 4, '', '596file_25042021144135.jpg', 'ready'),
+(43, 'Sambil Ijo', '2500', 5, '', '495file_25042021144045.jpg', 'ready'),
+(44, 'Sambel Tomat', '2500', 5, '', '637file_25042021144017.jpg', 'ready'),
+(45, 'Sambel Matah', '2500', 5, '', '401file_25042021143948.jpg', 'ready'),
+(46, 'Sambal Bawang', '2500', 5, '', '108file_25042021143846.jpg', 'ready'),
+(47, 'Telur', '3000', 5, '', '787file_25042021143819.jpg', 'ready'),
+(48, 'Nasi Putih', '3000', 5, '', '664file_25042021143758.jpeg', 'ready'),
+(49, 'Lontong', '2000', 5, '', '118file_25042021143704.jpg', 'ready');
 
 -- --------------------------------------------------------
 
@@ -237,7 +283,10 @@ INSERT INTO `menu` (`id`, `name`, `link`, `deskrip`, `icon`, `is_active`, `is_pa
 (74, 'Dashboard', 'admin/dashboard', 'hak akses info desa', 'fa fa-laptop', 1, 0, 'link'),
 (78, 'tema', 'admin/tema', 'hak akses', 'fa fa-list-alt', 1, 41, 'link'),
 (80, 'kategori', 'admin/kategori', 'hak akses', 'fa fa-laptop', 1, 40, 'link'),
-(81, 'listmenu', 'admin/listmenu', 'hak akses', 'fa fa-laptop', 1, 40, 'link');
+(81, 'listmenu', 'admin/listmenu', 'hak akses', 'fa fa-laptop', 1, 40, 'link'),
+(82, 'checkout', 'web/checkout', 'hak akses', 'fa fa-laptop', 1, 0, 'link'),
+(83, 'Pesanan Tamu', 'admin/pesanantamu', 'fungsi data Pesanan Tamu', 'fa fa-pencil', 1, 0, 'menu'),
+(84, 'Laporan', 'admin/kas', 'Laporan Transaksi', 'fa fa-pencil', 1, 0, 'menu');
 
 -- --------------------------------------------------------
 
@@ -265,49 +314,11 @@ CREATE TABLE `order` (
 --
 
 INSERT INTO `order` (`id_order`, `id_user`, `diskon`, `total_harga`, `bayar`, `date`, `waktu`, `transaksi`, `id_kasir`, `nama_kasir`, `metode`, `status`) VALUES
-(1, 'Online', '0', '13000', '13000', '2020-07-15', '12:21:02', 'diterima', 1, 'admin1', 'tunai', 'lunas'),
-(2, 'Online', '10', '20700', '13000', '2020-07-15', '12:28:05', 'diterima', 1, 'admin1', 'tunai', 'lunas'),
-(3, 'Online', '0', '13000', '13000', '2020-07-15', '13:01:24', 'diterima', 1, 'admin1', 'tunai', 'lunas'),
-(4, 'Online', '0', '13000', '13000', '2020-07-15', '13:02:08', 'diterima', 1, 'admin1', 'tunai', 'lunas'),
-(5, 'Online', '10', '11700', '20000', '2020-07-15', '13:03:01', 'diterima', 1, 'admin1', 'debit', 'lunas'),
-(6, 'Online', '5', '34200', '35000', '2020-07-15', '14:27:02', 'diterima', 1, 'admin1', 'tunai', 'lunas'),
-(8, 'udib', '10', '11700', '13000', '2020-07-15', '16:52:00', 'diterima', 1, 'admin1', 'tunai', 'lunas'),
-(9, 'Online', '2', '12740', '20000', '2020-07-15', '17:02:43', 'diterima', 1, 'admin1', 'debit', 'lunas'),
-(10, 'Online', '10', '23400', '50000', '2020-07-18', '19:33:11', 'diterima', 4, 'kasir42', 'tunai', 'lunas'),
-(11, 'madun', '', '46000', '46000', '2020-07-18', '19:33:54', 'diterima', 4, 'kasir42', 'tunai', 'lunas'),
-(12, 'Online', '', '26000', '26000', '2020-07-19', '21:18:38', 'diterima', 4, 'kasir42', 'tunai', 'lunas'),
-(13, 'Online', '12', '11440', '13000', '2020-07-27', '01:03:51', 'diterima', 4, 'kasir42', 'tunai', 'lunas'),
-(14, 'rizal', '', '13000', '13000', '2020-07-27', '01:04:56', 'diterima', 4, 'kasir42', 'tunai', 'lunas'),
-(15, 'Online', '', '13000', '13000', '2020-07-31', '00:49:19', 'diterima', 4, 'kasir42', 'tunai', 'lunas'),
-(16, 'Online', '', '13000', '13000', '2020-07-31', '00:49:50', 'diterima', 4, 'kasir42', 'tunai', 'lunas'),
-(17, 'Online', '0', '33000', '33000', '2020-07-31', '01:11:16', 'diterima', 4, 'kasir42', 'tunai', 'lunas'),
-(18, 'Online', '', '20000', '20000', '2020-07-31', '04:02:28', 'diterima', 4, 'kasir42', 'tunai', 'lunas'),
-(19, 'Online', '', '69000', '70000', '2020-07-31', '04:08:44', 'diterima', 4, 'kasir42', 'tunai', 'lunas'),
-(20, 'Online', '', '13000', '13000', '2020-07-31', '04:17:22', 'diterima', 4, 'kasir42', 'tunai', 'lunas'),
-(21, 'Online', '', '26000', '30000', '2020-07-31', '04:19:31', 'diterima', 4, 'kasir42', 'tunai', 'lunas'),
-(22, 'Online', '', '13000', '13000', '2020-07-31', '04:21:09', 'diterima', 4, 'kasir42', 'tunai', 'lunas'),
-(23, 'Online', '', '23000', '23000', '2020-07-31', '04:22:18', 'diterima', 4, 'kasir42', 'tunai', 'lunas'),
-(24, 'Online', '', '26000', '26000', '2020-07-31', '04:23:51', 'diterima', 4, 'kasir42', 'tunai', 'lunas'),
-(25, 'Online', '10', '134100', '150000', '2020-07-31', '04:25:51', 'diterima', 4, 'kasir42', 'tunai', 'lunas'),
-(26, 'Online', '5', '124450', '130000', '2020-07-31', '04:27:19', 'diterima', 4, 'kasir42', 'tunai', 'lunas'),
-(27, 'Online', '', '13000', '13000', '2020-07-31', '04:36:10', 'diterima', 4, 'kasir42', 'tunai', 'lunas'),
-(28, 'Online', '', '13000', '13000', '2020-07-31', '04:36:36', 'diterima', 4, 'kasir42', 'tunai', 'lunas'),
-(29, 'Online', '', '13000', '13000', '2020-07-31', '04:38:49', 'diterima', 4, 'kasir42', 'tunai', 'lunas'),
-(30, 'Online', '', '13000', '13000', '2020-07-31', '04:39:19', 'diterima', 4, 'kasir42', 'tunai', 'lunas'),
-(31, 'Online', '', '13000', '13000', '2020-07-31', '04:41:05', 'diterima', 4, 'kasir42', 'tunai', 'lunas'),
-(32, 'Online', '', '26000', '26000', '2020-07-31', '04:42:11', 'diterima', 4, 'kasir42', 'tunai', 'lunas'),
-(33, 'Online', '', '13000', '13000', '2020-07-31', '04:43:11', 'diterima', 4, 'kasir42', 'tunai', 'lunas'),
-(34, 'Online', '', '13000', '13000', '2020-07-31', '04:45:17', 'diterima', 4, 'kasir42', 'tunai', 'lunas'),
-(35, 'Online', '', '13000', '13000', '2020-07-31', '04:47:17', 'diterima', 4, 'kasir42', 'tunai', 'lunas'),
-(36, 'Online', '', '13000', '13000', '2020-07-31', '04:48:30', 'diterima', 4, 'kasir42', 'tunai', 'lunas'),
-(37, 'Online', '', '39000', '39000', '2020-07-31', '04:49:21', 'diterima', 4, 'kasir42', 'tunai', 'lunas'),
-(38, 'Online', '', '13000', '13000', '2020-07-31', '13:27:14', 'diterima', 4, 'kasir42', 'tunai', 'lunas'),
-(39, 'Online', '', '13000', '13000', '2020-07-31', '13:31:21', 'diterima', 4, 'kasir42', 'tunai', 'lunas'),
-(40, 'udib', '', '39000', '39000', '2020-07-31', '13:41:46', 'diterima', 4, 'kasir42', 'tunai', 'lunas'),
-(41, 'Online', '', '13000', '13000', '2020-07-31', '13:46:57', 'diterima', 4, 'kasir42', 'tunai', 'lunas'),
-(42, 'Online', '', '13000', '15000', '2020-07-31', '14:12:57', 'diterima', 4, 'kasir42', 'tunai', 'lunas'),
-(43, 'Online', '10', '62100', '65000', '2020-08-07', '19:21:44', 'diterima', 4, 'kasir42', 'tunai', 'lunas'),
-(44, 'fds', '1', '0', '10000', '2021-04-07', '02:22:15', 'diterima', 1, 'admin1', 'tunai', 'lunas');
+(4, '2', '', '11000', '11000', '2021-04-27', '12:51:48', 'diterima', 1, 'admin1', 'tunai', 'lunas'),
+(5, '2', '', '10000', '10000', '2021-04-27', '12:52:49', 'diterima', 1, 'admin1', 'tunai', 'lunas'),
+(6, '2', '', '0', '0', '2021-04-27', '12:59:02', 'diterima', 1, 'admin1', 'tunai', 'lunas'),
+(7, '2', '', '10000', '10000', '2021-04-27', '12:59:20', 'diterima', 1, 'admin1', 'tunai', 'lunas'),
+(8, '2', '', '11000', '11000', '2021-04-27', '13:06:36', 'diterima', 1, 'admin1', 'tunai', 'lunas');
 
 -- --------------------------------------------------------
 
@@ -333,65 +344,10 @@ CREATE TABLE `order_detail` (
 --
 
 INSERT INTO `order_detail` (`id_order_detail`, `id_order`, `id_menu`, `nama_menu`, `id_kategori`, `nama_kategori`, `qty`, `harga`, `total_harga`, `gambar`) VALUES
-(1, 1, 1, 'Nasi Ayam Sambal Matah', 1, 'Makanan', 1, 13000, 13000, '806file_26042020061734.jpg'),
-(2, 2, 2, 'Nasi Ayam Saus Salted Egg', 1, 'Makanan', 1, 13000, 13000, '569file_26042020061705.jpg'),
-(3, 2, 5, 'Tarlet', 2, 'Minuman', 1, 10000, 10000, '528file_26042020061518.jpg'),
-(4, 3, 1, 'Nasi Ayam Sambal Matah', 1, 'Makanan', 1, 13000, 13000, '806file_26042020061734.jpg'),
-(5, 4, 3, 'Nasi Ayam Saus Asam Manis', 1, 'Makanan', 1, 13000, 13000, '602file_26042020061634.jpg'),
-(6, 5, 2, 'Nasi Ayam Saus Salted Egg', 1, 'Makanan', 1, 13000, 13000, '569file_26042020061705.jpg'),
-(7, 6, 1, 'Nasi Ayam Sambal Matah', 1, 'Makanan', 2, 13000, 26000, '806file_26042020061734.jpg'),
-(8, 6, 7, 'kentang', 3, 'Camilan', 1, 10000, 10000, '959file_23042020054033.jpg'),
-(10, 8, 1, 'Nasi Ayam Sambal Matah', 1, 'Makanan', 1, 13000, 13000, '806file_26042020061734.jpg'),
-(11, 9, 1, 'Nasi Ayam Sambal Matah', 1, 'Makanan', 1, 13000, 13000, '806file_26042020061734.jpg'),
-(12, 10, 1, 'Nasi Ayam Sambal Matah', 1, 'Makanan', 2, 13000, 26000, '806file_26042020061734.jpg'),
-(13, 11, 2, 'Nasi Ayam Saus Salted Egg', 1, 'Makanan', 2, 13000, 26000, '569file_26042020061705.jpg'),
-(14, 11, 5, 'Tarlet', 2, 'Minuman', 2, 10000, 20000, '528file_26042020061518.jpg'),
-(15, 12, 2, 'Nasi Ayam Saus Salted Egg', 1, 'Makanan', 2, 13000, 26000, '569file_26042020061705.jpg'),
-(16, 13, 1, 'Nasi Ayam Sambal Matah', 1, 'Makanan', 1, 13000, 13000, '806file_26042020061734.jpg'),
-(17, 14, 2, 'Nasi Ayam Saus Salted Egg', 1, 'Makanan', 1, 13000, 13000, '569file_26042020061705.jpg'),
-(18, 15, 1, 'Nasi Ayam Sambal Matah', 1, 'Makanan', 1, 13000, 13000, '806file_26042020061734.jpg'),
-(19, 16, 1, 'Nasi Ayam Sambal Matah', 1, 'Makanan', 1, 13000, 13000, '806file_26042020061734.jpg'),
-(20, 17, 1, 'Nasi Ayam Sambal Matah', 1, 'Makanan', 1, 13000, 13000, '806file_26042020061734.jpg'),
-(21, 17, 4, 'Banana Coffee', 2, 'Minuman', 1, 10000, 10000, '895file_26042020061606.jpg'),
-(22, 17, 5, 'Tarlet', 2, 'Minuman', 1, 10000, 10000, '528file_26042020061518.jpg'),
-(23, 18, 4, 'Banana Coffee', 2, 'Minuman', 2, 10000, 20000, '895file_26042020061606.jpg'),
-(24, 19, 2, 'Nasi Ayam Saus Salted Egg', 1, 'Makanan', 3, 13000, 39000, '569file_26042020061705.jpg'),
-(25, 19, 4, 'Banana Coffee', 2, 'Minuman', 3, 10000, 30000, '895file_26042020061606.jpg'),
-(26, 20, 3, 'Nasi Ayam Saus Asam Manis', 1, 'Makanan', 1, 13000, 13000, '602file_26042020061634.jpg'),
-(27, 21, 3, 'Nasi Ayam Saus Asam Manis', 1, 'Makanan', 2, 13000, 26000, '602file_26042020061634.jpg'),
-(28, 22, 3, 'Nasi Ayam Saus Asam Manis', 1, 'Makanan', 1, 13000, 13000, '602file_26042020061634.jpg'),
-(29, 23, 4, 'Banana Coffee', 2, 'Minuman', 1, 10000, 10000, '895file_26042020061606.jpg'),
-(30, 23, 3, 'Nasi Ayam Saus Asam Manis', 1, 'Makanan', 1, 13000, 13000, '602file_26042020061634.jpg'),
-(31, 24, 3, 'Nasi Ayam Saus Asam Manis', 1, 'Makanan', 2, 13000, 26000, '602file_26042020061634.jpg'),
-(32, 25, 3, 'Nasi Ayam Saus Asam Manis', 1, 'Makanan', 3, 13000, 39000, '602file_26042020061634.jpg'),
-(33, 25, 4, 'Banana Coffee', 2, 'Minuman', 3, 10000, 30000, '895file_26042020061606.jpg'),
-(34, 25, 5, 'Tarlet', 2, 'Minuman', 2, 10000, 20000, '528file_26042020061518.jpg'),
-(35, 25, 7, 'kentang', 3, 'Camilan', 1, 10000, 10000, '959file_23042020054033.jpg'),
-(36, 25, 8, 'Tiramissu', 4, 'Dessert', 2, 25000, 50000, '367file_08072020031921.jpg'),
-(37, 26, 1, 'Nasi Ayam Sambal Matah', 1, 'Makanan', 3, 13000, 39000, '806file_26042020061734.jpg'),
-(38, 26, 3, 'Nasi Ayam Saus Asam Manis', 1, 'Makanan', 3, 13000, 39000, '602file_26042020061634.jpg'),
-(39, 26, 7, 'kentang', 3, 'Camilan', 2, 10000, 20000, '959file_23042020054033.jpg'),
-(40, 26, 4, 'Banana Coffee', 2, 'Minuman', 2, 10000, 20000, '895file_26042020061606.jpg'),
-(41, 26, 2, 'Nasi Ayam Saus Salted Egg', 1, 'Makanan', 1, 13000, 13000, '569file_26042020061705.jpg'),
-(42, 27, 1, 'Nasi Ayam Sambal Matah', 1, 'Makanan', 1, 13000, 13000, '806file_26042020061734.jpg'),
-(43, 28, 1, 'Nasi Ayam Sambal Matah', 1, 'Makanan', 1, 13000, 13000, '806file_26042020061734.jpg'),
-(44, 29, 1, 'Nasi Ayam Sambal Matah', 1, 'Makanan', 1, 13000, 13000, '806file_26042020061734.jpg'),
-(45, 30, 1, 'Nasi Ayam Sambal Matah', 1, 'Makanan', 1, 13000, 13000, '806file_26042020061734.jpg'),
-(46, 31, 3, 'Nasi Ayam Saus Asam Manis', 1, 'Makanan', 1, 13000, 13000, '602file_26042020061634.jpg'),
-(47, 32, 2, 'Nasi Ayam Saus Salted Egg', 1, 'Makanan', 1, 13000, 13000, '569file_26042020061705.jpg'),
-(48, 32, 3, 'Nasi Ayam Saus Asam Manis', 1, 'Makanan', 1, 13000, 13000, '602file_26042020061634.jpg'),
-(49, 33, 3, 'Nasi Ayam Saus Asam Manis', 1, 'Makanan', 1, 13000, 13000, '602file_26042020061634.jpg'),
-(50, 34, 3, 'Nasi Ayam Saus Asam Manis', 1, 'Makanan', 1, 13000, 13000, '602file_26042020061634.jpg'),
-(51, 35, 2, 'Nasi Ayam Saus Salted Egg', 1, 'Makanan', 1, 13000, 13000, '569file_26042020061705.jpg'),
-(52, 36, 3, 'Nasi Ayam Saus Asam Manis', 1, 'Makanan', 1, 13000, 13000, '602file_26042020061634.jpg'),
-(53, 37, 3, 'Nasi Ayam Saus Asam Manis', 1, 'Makanan', 3, 13000, 39000, '602file_26042020061634.jpg'),
-(54, 38, 1, 'Nasi Ayam Sambal Matah', 1, 'Makanan', 1, 13000, 13000, '806file_26042020061734.jpg'),
-(55, 39, 3, 'Nasi Ayam Saus Asam Manis', 1, 'Makanan', 1, 13000, 13000, '602file_26042020061634.jpg'),
-(56, 40, 2, 'Nasi Ayam Saus Salted Egg', 1, 'Makanan', 3, 13000, 39000, '569file_26042020061705.jpg'),
-(57, 41, 1, 'Nasi Ayam Sambal Matah', 1, 'Makanan', 1, 13000, 13000, '806file_26042020061734.jpg'),
-(58, 42, 2, 'Nasi Ayam Saus Salted Egg', 1, 'Makanan', 1, 13000, 13000, '569file_26042020061705.jpg'),
-(59, 43, 2, 'Nasi Ayam Saus Salted Egg', 1, 'Makanan', 3, 13000, 39000, '569file_26042020061705.jpg'),
-(60, 43, 4, 'Banana Coffee', 2, 'Minuman', 3, 10000, 30000, '895file_26042020061606.jpg');
+(3, 4, 8, 'Bakmi Gak Basah / Dibasahin', 1, 'Makanan', 1, 11000, 11000, '612file_25042021152157.jpg'),
+(4, 5, 3, 'Nasi Goreng DJ ( Daun Jeruk)', 1, 'Makanan', 1, 10000, 10000, '774file_25042021152640.jpg'),
+(5, 7, 2, 'Lele Penyet', 1, 'Makanan', 1, 10000, 10000, '158file_25042021152725.jpg'),
+(6, 8, 5, 'Nasi Goreng Millenial (Sambal Matah)', 1, 'Makanan', 1, 11000, 11000, '354file_25042021152432.jpg');
 
 -- --------------------------------------------------------
 
@@ -412,47 +368,7 @@ CREATE TABLE `tema` (
 --
 
 INSERT INTO `tema` (`id_tema`, `navbar_bg_color`, `navbar_font_color`, `sidebar_bg_color`, `sidebar_font_color`) VALUES
-(1, 'blue', 'dark', 'light', 'blue');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tes`
---
-
-CREATE TABLE `tes` (
-  `id` int(11) NOT NULL,
-  `judul` varchar(100) NOT NULL,
-  `deskripsi` date NOT NULL,
-  `images` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `tes`
---
-
-INSERT INTO `tes` (`id`, `judul`, `deskripsi`, `images`) VALUES
-(3, 'Amazing Ta', '2020-08-04', 'fgdhdfhd');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tes2`
---
-
-CREATE TABLE `tes2` (
-  `id` int(11) NOT NULL,
-  `nama_ketua` varchar(100) NOT NULL,
-  `time` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `tes2`
---
-
-INSERT INTO `tes2` (`id`, `nama_ketua`, `time`) VALUES
-(3, 'fgdg', 34),
-(4, 'fdsfsd 4t3ter', 343244543);
+(1, 'maroon', 'dark', 'dark', 'maroon');
 
 -- --------------------------------------------------------
 
@@ -480,13 +396,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `username`, `password`, `email`, `nokartuidentitas`, `first_name`, `last_name`, `alamat`, `phone`, `foto`, `active`) VALUES
 (1, 'admin1', 'e10adc3949ba59abbe56e057f20f883e', 'admin@gmail.com', '', 'admin1', NULL, NULL, '083834558876', '1file_09092020122247.png', 1),
-(2, 'kasir1', 'e10adc3949ba59abbe56e057f20f883e', 'kasir1@gmail.com', '', 'raka', NULL, NULL, '082122314141', 'default.png', 1),
-(3, 'kasir2', 'e10adc3949ba59abbe56e057f20f883e', 'kasir2@gmail.com', '', 'andi', NULL, NULL, '08888', 'default.png', 0),
-(4, 'kasir42', 'e10adc3949ba59abbe56e057f20f883e', 'kasir42@mail.com', '', 'kasir 1', NULL, 'ewfrew', '08942141241', 'default.png', 1),
-(9, 'joni2', 'e10adc3949ba59abbe56e057f20f883e', 'joni@gmail.com', NULL, 'joni', NULL, NULL, '08942141241', '9file_09092020122100.png', 1),
-(10, 'kasir43', 'e10adc3949ba59abbe56e057f20f883e', 'khodirotulu@gmail.com', NULL, 'kasir widodo', NULL, 'ngojel from hell', '08942141242', '10file_09092020122005.png', 0),
-(12, 'rffanani97', 'e10adc3949ba59abbe56e057f20f883e', 'rffanani97@mail.com', NULL, 'joni', NULL, 'ngojel from hell', '08942141241', '12file_09092020121929.jpg', 0),
-(13, 'yayan123', 'e10adc3949ba59abbe56e057f20f883e', 'yayan123@mail.com', NULL, 'yayan', NULL, 'gh', '08942141241', 'default.png', 1);
+(2, 'joni2', 'e10adc3949ba59abbe56e057f20f883e', 'joni@gmail.com', NULL, 'joni', NULL, NULL, '082139121467', 'default.png', 1);
 
 -- --------------------------------------------------------
 
@@ -509,13 +419,7 @@ CREATE TABLE `users_detail` (
 
 INSERT INTO `users_detail` (`id`, `ip_address`, `activation_code`, `forgotten_password_time`, `created_on`, `last_login`) VALUES
 (1, '109.109.109.109', NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL),
-(2, '::1', NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL),
-(3, '::1', NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL),
-(4, '::1', NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL),
-(9, '::1', NULL, NULL, '2020-08-23 21:51:43', NULL),
-(10, '::1', NULL, NULL, '2020-08-23 22:13:02', NULL),
-(12, '::1', NULL, NULL, '2020-09-09 11:20:29', NULL),
-(13, '::1', NULL, NULL, '2020-10-01 09:14:38', NULL);
+(2, '::1', NULL, NULL, '2021-04-27 12:51:34', NULL);
 
 -- --------------------------------------------------------
 
@@ -667,18 +571,6 @@ ALTER TABLE `tema`
   ADD PRIMARY KEY (`id_tema`);
 
 --
--- Indexes for table `tes`
---
-ALTER TABLE `tes`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `tes2`
---
-ALTER TABLE `tes2`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -698,7 +590,7 @@ ALTER TABLE `users_detail`
 -- AUTO_INCREMENT for table `auth_assignment`
 --
 ALTER TABLE `auth_assignment`
-  MODIFY `id_assignment` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_assignment` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `auth_item`
@@ -710,7 +602,7 @@ ALTER TABLE `auth_item`
 -- AUTO_INCREMENT for table `auth_item_child`
 --
 ALTER TABLE `auth_item_child`
-  MODIFY `idc` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
+  MODIFY `idc` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98;
 
 --
 -- AUTO_INCREMENT for table `info`
@@ -722,31 +614,31 @@ ALTER TABLE `info`
 -- AUTO_INCREMENT for table `kategori`
 --
 ALTER TABLE `kategori`
-  MODIFY `id_kategori` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_kategori` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `listmenu`
 --
 ALTER TABLE `listmenu`
-  MODIFY `id_menu` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_menu` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- AUTO_INCREMENT for table `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
 
 --
 -- AUTO_INCREMENT for table `order`
 --
 ALTER TABLE `order`
-  MODIFY `id_order` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `id_order` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `order_detail`
 --
 ALTER TABLE `order_detail`
-  MODIFY `id_order_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `id_order_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `tema`
@@ -755,22 +647,10 @@ ALTER TABLE `tema`
   MODIFY `id_tema` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `tes`
---
-ALTER TABLE `tes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT for table `tes2`
---
-ALTER TABLE `tes2`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

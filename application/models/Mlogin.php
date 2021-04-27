@@ -18,6 +18,16 @@ class Mlogin extends CI_Model
         return $query = $this->db->get('users')->row();     
     }
 
+    public function validatelvl($username,$password)
+    {
+        $this->db->select('id,username,first_name,Foto,active,id_aunt');
+        $this->db->from('users');
+        $this->db->join('auth_assignment', 'users.id = auth_assignment.user_id');
+        $this->db->where('username', $username);
+        $this->db->where('password', $password);
+        return $query = $this->db->get()->row();     
+    }
+
     public function validateusername($username,$password)
     {
         $this->db->where('username', $username);

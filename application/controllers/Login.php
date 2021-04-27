@@ -35,22 +35,23 @@ class Login extends CI_Controller
             redirect(site_url('login'));
         }
         else{
-            $query = $this->Mlogin->validateusername($username,$password);
+            $query = $this->Mlogin->validatelvl($username,$password);
             if(!empty($query)){
                 $data = array(
                     'id' => $query->id,
                     'user_id' => $query->username,
                     'first_name' => $query->first_name,
-                    'fot' => $query->foto,
+                    'fot' => $query->Foto,
                     'is_blokir' => $query->active,
+                    'lvl' => $query->id_aunt,
                     'validated' => true
                 );
                 if($query->active == '1'){
                     $this->session->set_userdata($data);
-                    if ($query->id==1) {
+                    if ($query->id_aunt==1) {
                         redirect(site_url('admin/dashboard'));
                     }else{
-                        redirect(site_url('admin/dashboard'));
+                        redirect(site_url('web/checkout'));
                     }
                 }
                 else{

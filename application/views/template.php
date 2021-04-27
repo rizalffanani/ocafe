@@ -73,7 +73,7 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-<?= $tema->sidebar_bg_color?>-<?= $tema->sidebar_font_color?> elevation-4">
     <!-- Brand Logo -->
-    <a href="<?php echo site_url('dashboard') ?>" class="brand-link">
+    <a href="<?php echo site_url('admin/dashboard') ?>" class="brand-link">
       <img src="<?php echo base_url(); ?>assets/img/<?= $infoweb->logo_web?>" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
            style="opacity: .8;width: 33px;height: 33px;">
       <span class="brand-text font-weight-light"><?= $infoweb->nama_web?></span>

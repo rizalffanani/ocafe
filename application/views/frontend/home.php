@@ -72,7 +72,7 @@
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content -->
-  </div>
+</div>
     <div class="modal fade" id="myModal" role="dialog">
       <div class="modal-dialog modal-sm">
         <div class="modal-content">

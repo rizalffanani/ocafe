@@ -7,13 +7,6 @@ class Web extends CI_Controller
 {
     function __construct()
     {
-        header('Access-Control-Allow-Origin: *');
-        header("Access-Control-Allow-Methods: GET, OPTIONS");
-        header("Access-Control-Allow-Headers: Content-Type, Content-Length, Accept-Encoding");
-
-        if ( "OPTIONS" === $_SERVER['REQUEST_METHOD'] ) {
-            die();
-        }
         parent::__construct();
         $this->load->model('Web_model');
     }
@@ -28,16 +21,7 @@ class Web extends CI_Controller
         $b  = array('kategori' => $kategori, 'menu' => $menu, 'order' => $order, 'order_detail' => $order_detail);
 
         $this->template->load('front','frontend/home', $b);
-    }    
-    public function ce()
-    {
-       echo 's';
-    }
-    function chart()
-    {
-        $b = array();
-        $this->template->load('front','frontend/cart', $b);
-    }
+    }   
     function add_to_cart($id,$qty){ //fungsi Add To Cart
 
         $row = $this->Web_model->get_by_id($id);
@@ -110,35 +94,50 @@ class Web extends CI_Controller
         redirect('web');
 
     }
-    public function checkout($user)
+    public function checkout($ida="")
     {
-        $data = array(
-            'id_user' =>  $user,
-            'total_harga' => $this->cart->total(),
-            'date' => date("Y-m-d"),
-            'waktu' => date("H:i:s"),
-            'bayar' => 0,
-        );
-        $table="order";
-        $this->Web_model->insertall($table,$data);
-        $ida= $this->db->insert_id();
-        foreach($this->cart->contents() as $key){
-            $data = array(
-                'id_order' =>  $ida,
-                'id_menu' => $key['id'],
-                'nama_menu' => $key['name'],
-                'id_kategori' => $key['id_kategori'],
-                'nama_kategori' => $key['nama_kategori'],
-                'qty' => $key['qty'],
-                'harga' => $key['price'],
-                'total_harga' => $key['subtotal'],
-                'gambar' => $key['gambar'],
-            );
-            $table="order_detail";
-            $this->Web_model->insertall($table,$data);
-            $this->cart->remove($key['rowid']);
+        $ida = $ida;
+        if ($ida!="") {
+            $this->authclass->check_isvalidated(base_url().'login');
+            $count=count($this->cart->contents());
+            if ($count>0) {
+                $data = array(
+                    'id_user' =>  $this->session->userdata("id"),
+                    'total_harga' => $this->cart->total(),
+                    'date' => date("Y-m-d"),
+                    'waktu' => date("H:i:s"),
+                    'bayar' => 0,
+                );
+                $table="order";
+                $this->Web_model->insertall($table,$data);
+                $ida= $this->db->insert_id();
+                foreach($this->cart->contents() as $key){
+                    $data = array(
+                        'id_order' =>  $ida,
+                        'id_menu' => $key['id'],
+                        'nama_menu' => $key['name'],
+                        'id_kategori' => $key['id_kategori'],
+                        'nama_kategori' => $key['nama_kategori'],
+                        'qty' => $key['qty'],
+                        'harga' => $key['price'],
+                        'total_harga' => $key['subtotal'],
+                        'gambar' => $key['gambar'],
+                    );
+                    $table="order_detail";
+                    $this->Web_model->insertall($table,$data);
+                    $this->cart->remove($key['rowid']);
+                }
+            }
+            $row = $this->Web_model->get_all_where($table="order","id_order",$ida)->row();
+            $row2 = $this->Web_model->get_all_where($table="order_detail","id_order",$ida)->result();
+            $this->load->model('Users_model');
+            $row3 = $this->Users_model->get_by_id($this->session->userdata("user_id"));
+            $data = array("row"=>$row,"row2"=>$row2,"row3"=>$row3);
+            $this->template->load('front','frontend/cart', $data);
+        }else{
+            redirect('web');
         }
-        echo ($ida);
+        
     }   
     public function ckt($id)
     {

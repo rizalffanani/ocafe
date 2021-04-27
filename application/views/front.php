@@ -114,6 +114,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <h5 style="color: black">Total 
         <span id="totals" style="float: right;">Rp.<?php echo rupiah($this->cart->total()); ?></span>
       </h5>
+      <?php if($count>0){?>
+      <a href="<?= base_url(); ?>web/checkout" ><button class="btn btn-block btn-warning">Check Out</button></a>
+      <?php } ?>
     </div>
     <script type="text/javascript">
         $(function() {
