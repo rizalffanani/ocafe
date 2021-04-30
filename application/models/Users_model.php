@@ -36,6 +36,17 @@ class Users_model extends CI_Model
         $this->db->order_by($this->id, $this->order);
         $this->db->where("username", $id);
         return $this->db->get()->row();
+    }    
+
+    function get_by_id2($id)
+    {
+        $this->db->select('id,username,first_name,password,email,alamat,phone,Foto,item_name,active');
+        $this->db->from($this->table);
+        //add this line for join
+        $this->db->join('auth_assignment', 'users.id = auth_assignment.user_id');
+        $this->db->order_by($this->id, $this->order);
+        $this->db->where("id", $id);
+        return $this->db->get()->row();
     }
     
     // get total rows

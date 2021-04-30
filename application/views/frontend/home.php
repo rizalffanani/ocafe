@@ -1,10 +1,51 @@
- <div class="content-wrapper" style="margin-top: 200px;">
+ <div class="content-wrapper" style="margin-top: 160px;">
 
     <!-- Main content -->
     <div class="content">
       <div class="container">
         <div class="row">
           <div class="col-lg-12">
+            <div id="demo" class="carousel slide" data-ride="carousel" style="height: 350px;">
+              <ul class="carousel-indicators">
+                <?php $i=0;foreach ($slider as $key => $value) {?>
+                <li data-target="#demo" data-slide-to="<?= $i?>" class="<?php echo ($i==0) ? 'active' : '' ; ?>"></li>
+                <?php $i++;}?>
+              </ul>
+              <style>
+              /* Make the image fully responsive */
+              .carousel-caption{
+                position: absolute;
+                right: 20%;
+                top: 8%;
+                z-index: 10;
+                padding-top: 20px;
+                padding-bottom: 20px;
+                color: black;
+                text-align: right;
+              }
+              .carousel-inner img {
+                width: 100%;
+                height: 100%;
+              }
+              </style>
+              <div class="carousel-inner">
+                <?php $i=0;foreach ($slider as $key => $value) {?>
+                <div class="carousel-item <?php echo ($i==0) ? 'active' : '' ; ?>">
+                  <img src="<?php  echo (base_url());?>gambar/slider/<?= $value->images?>" alt="Chicago" width="1100" height="500">
+                  <div class="carousel-caption">
+                    <h2><?= $value->judul?></h2>
+                    <p><b><?= $value->deskripsi?></b></p>
+                  </div>   
+                </div>
+                <?php $i++;}?>
+              </div>
+              <a class="carousel-control-prev" href="#demo" data-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+              </a>
+              <a class="carousel-control-next" href="#demo" data-slide="next">
+                <span class="carousel-control-next-icon"></span>
+              </a>
+            </div>
             <div class="card">
               <div class="card-body">
                 <div class="row">
@@ -43,7 +84,7 @@
                                           </li>
                                         </ul>
 
-                                        <a href="#" onclick="ds('<?= $value->id_menu?>')" id="ok" data-toggle="modal" data-target="#myModal" class="btn btn-outline-info btn-block"><b>Add tos cart</b></a>
+                                        <a href="#" onclick="ds('<?= $value->id_menu?>')" id="ok" data-toggle="modal" data-target="#myModal" class="btn btn-outline-info btn-block"><b>Add to cart</b></a>
                                       </div>
                                     </div>
                                   </div>

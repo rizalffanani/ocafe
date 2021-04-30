@@ -13,6 +13,10 @@
                           <tr><td>Nama</td><td><?= $row3->first_name?></td></tr>
                           <tr><td>Hp</td><td><?= $row3->phone?></td></tr>
                           <tr><td>Nota</td><td>#<?= $row->id_order?></td></tr>
+                          <?php if (!empty($row->lokasi)) {?>
+                            <tr><td>Lokasi</td><td><?= $row->lokasi?></td></tr>
+                            <tr><td>Catatan</td><td><?= $row->catatan?></td></tr>
+                          <?php }?>
                           <tr>
                             <td>Tanggal</td>
                             <td><?php $date=date_create($row->date);echo date_format($date,"d F Y").' '.$row->waktu;?></td>
@@ -45,6 +49,30 @@
                           </tr>
                       </tbody>
                   </table>
+                  <?php if($row->id_lokasi==0){?>
+                  <form action="<?php echo site_url('web/konfirm'); ?>" method="post" class="row">
+                    <div class="col-sm-6">
+                      <!-- radio -->
+                      <div class="form-group">
+                        <label>Lokasi</label>
+                        <?php foreach ($lok as $key => $value) {?>
+                        <div class="custom-control custom-radio">
+                          <input class="custom-control-input" type="radio" id="customRadio<?= $value->id_lokasi?>" name="lokasi" value="<?= $value->id_lokasi?>/<?= $value->lokasi?>">
+                          <label for="customRadio<?= $value->id_lokasi?>" class="custom-control-label"><?= $value->lokasi?></label>
+                        </div>
+                        <?php }?>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label>Catatan Singkat</label>
+                        <textarea class="form-control" name="catatan" rows="3" placeholder="Enter ..."></textarea>
+                      </div>
+                    </div> 
+                    <input type="hidden" name="id" value="<?= $row->id_order?>">
+                    <button type="submit" class="btn btn-primary">Konfirmasi</button> 
+                  </form>
+                   <?php }?>
                   <!-- <div class="order-footer">
                     <span class="ng-binding">*Additional 10% government tax is not included in subtotal price</span>
                   </div> --> 

@@ -17,8 +17,9 @@ class Web extends CI_Controller
         $menu           = $this->Web_model->get_all_menu();
         $order          = $this->Web_model->get_all_order();
         $order_detail   = $this->Web_model->get_all_order_detail();
+        $slider   = $this->Web_model->get_all("slider");
 
-        $b  = array('kategori' => $kategori, 'menu' => $menu, 'order' => $order, 'order_detail' => $order_detail);
+        $b  = array('kategori' => $kategori, 'menu' => $menu, 'order' => $order, 'order_detail' => $order_detail, 'slider' => $slider);
 
         $this->template->load('front','frontend/home', $b);
     }   
@@ -96,8 +97,16 @@ class Web extends CI_Controller
     }
     public function checkout($ida="")
     {
-        $ida = $ida;
+        $this->load->model('Lokasi_model');
+        $lok = $this->Lokasi_model->get_all();
         if ($ida!="") {
+            $row = $this->Web_model->get_all_where($table="order","id_order",$ida)->row();
+            $row2 = $this->Web_model->get_all_where($table="order_detail","id_order",$ida)->result();
+            $this->load->model('Users_model');
+            $row3 = $this->Users_model->get_by_id2($row->id_user);
+            $data = array("row"=>$row,"row2"=>$row2,"row3"=>$row3,"lok"=>$lok);
+            $this->template->load('front','frontend/cart', $data);
+        }else{
             $this->authclass->check_isvalidated(base_url().'login');
             $count=count($this->cart->contents());
             if ($count>0) {
@@ -107,6 +116,7 @@ class Web extends CI_Controller
                     'date' => date("Y-m-d"),
                     'waktu' => date("H:i:s"),
                     'bayar' => 0,
+                    'id_lokasi' => 0,
                 );
                 $table="order";
                 $this->Web_model->insertall($table,$data);
@@ -127,15 +137,16 @@ class Web extends CI_Controller
                     $this->Web_model->insertall($table,$data);
                     $this->cart->remove($key['rowid']);
                 }
+
+                $row = $this->Web_model->get_all_where($table="order","id_order",$ida)->row();
+                $row2 = $this->Web_model->get_all_where($table="order_detail","id_order",$ida)->result();
+                $this->load->model('Users_model');
+                $row3 = $this->Users_model->get_by_id($this->session->userdata("user_id"));
+                $data = array("row"=>$row,"row2"=>$row2,"row3"=>$row3,"lok"=>$lok);
+                $this->template->load('front','frontend/cart', $data);
+            }else{
+                redirect('web');
             }
-            $row = $this->Web_model->get_all_where($table="order","id_order",$ida)->row();
-            $row2 = $this->Web_model->get_all_where($table="order_detail","id_order",$ida)->result();
-            $this->load->model('Users_model');
-            $row3 = $this->Users_model->get_by_id($this->session->userdata("user_id"));
-            $data = array("row"=>$row,"row2"=>$row2,"row3"=>$row3);
-            $this->template->load('front','frontend/cart', $data);
-        }else{
-            redirect('web');
         }
         
     }   
@@ -145,6 +156,33 @@ class Web extends CI_Controller
         $order_detail = $this->Web_model->get_all_where('order_detail','id_order', $id);
         $b = array('order'=>$order->row(),'detail'=>$order_detail->result());
         $this->template->load('front','frontend/ckt', $b);
+    }
+
+    public function konfirm() 
+    {
+        $this->_rules();
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->checkout($this->input->post('id', TRUE));
+        } else {
+            $lokasi = explode("/", $this->input->post('lokasi',TRUE));
+            $data = array(
+                'id_lokasi' => $lokasi[0],
+                'lokasi' => $lokasi[1],
+                'catatan' => $this->input->post('catatan',TRUE),
+            );
+
+            $this->Web_model->update("order", "id_order", $this->input->post('id', TRUE), $data);
+            $this->session->set_flashdata('message', 'Update Record Success');
+            redirect(site_url('web/checkout/'.$this->input->post('id', TRUE)));
+        }
+    }
+
+    public function _rules() 
+    {
+        $this->form_validation->set_rules('lokasi', 'lokasi', 'trim|required');
+
+        $this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
     }
 }
 

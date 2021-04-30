@@ -14,15 +14,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <meta http-equiv="x-ua-compatible" content="ie=edge">
 
   <title>AdminLTE 3 | Top Navigation</title>
-
+  <link rel="icon" href="<?php echo base_url(); ?>assets/img/<?= $infoweb->logo_web?>">
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="<?php  echo (base_url());?>assets/backend/plugins/fontawesome-free/css/all.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="<?php  echo (base_url());?>assets/backend/dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="<?php  echo (base_url());?>assets/backend/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
   <link rel="stylesheet" href="<?php  echo (base_url());?>assets/backend/plugins/toastr/toastr.min.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   <script src="<?php  echo (base_url());?>assets/backend/plugins/jquery/jquery.min.js"></script>
+  <script src="<?php  echo (base_url());?>assets/js/popper.min.js"></script>
   <script src="<?php  echo (base_url());?>assets/backend/plugins/toastr/toastr.min.js"></script>
 
 </head>
@@ -30,12 +32,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <div class="wrapper">
 
   <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand-md navbar-light navbar-white" style="height: 200px;">
+  <nav class="main-header navbar navbar-expand-md navbar-light navbar-white" style="height: 150px;">
     <div class="container">
       <a href="<?php echo site_url('web') ?>" class="navbar-brand">
         <img src="<?php echo base_url(); ?>assets/img/<?= $infoweb->logo_web?>" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-             style="opacity: .8;height: 150px;">
-        <!-- <span class="brand-text font-weight-light"><?= $infoweb->nama_web?></span> -->
+             style="opacity: .8;height: 90px;"><br>
+        <span class="brand-text font-weight-light">Delivery Order</span>
       </a>
       
       <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,8 +50,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <li class="nav-item">
             <a href="<?php echo site_url('web') ?>" class="nav-link">Home</a>
           </li>
+          <?php if(!$this->session->userdata("user_id")){?>
           <li class="nav-item">
-            <a href="<?php echo site_url('login') ?>" class="nav-link"><i class="fas fa-sign-in-alt" aria-hidden="true"></i></a>
+            <a href="<?php echo site_url('login') ?>" class="nav-link">Login</a>
+          </li>
+          <?php }else{?>
+          <li class="nav-item">
+            <a href="<?php echo site_url('login/logout') ?>" class="nav-link">Logout</a>
+          </li>
+          <?php }?>
+          <li class="nav-item">
+            <a href="<?php echo site_url('login/regis') ?>" class="nav-link">Registrasi</a>
           </li>
         </ul>
 
@@ -115,7 +126,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <span id="totals" style="float: right;">Rp.<?php echo rupiah($this->cart->total()); ?></span>
       </h5>
       <?php if($count>0){?>
-      <a href="<?= base_url(); ?>web/checkout" ><button class="btn btn-block btn-warning">Check Out</button></a>
+      <a href="<?= base_url(); ?>web/checkout" id="checkout"><button class="btn btn-block btn-warning">Check Out</button></a>
       <?php } ?>
     </div>
     <script type="text/javascript">
@@ -135,6 +146,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             success: function(data){   
               document.getElementById('count').style.display = "block";
               document.getElementById('count').innerHTML = data.jml;
+              if (!data.jml) {document.getElementById('checkout').style.display = "none";}
               document.getElementById('table'+a).innerHTML = "<tr></tr>";   
               document.getElementById('totals').innerHTML = "Rp."+data.format;
             }  
