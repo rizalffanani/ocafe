@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 27, 2021 at 09:54 AM
+-- Generation Time: May 05, 2021 at 11:55 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.2
 
@@ -126,7 +126,11 @@ INSERT INTO `auth_item_child` (`idc`, `id_aunt`, `parent`, `child`) VALUES
 (93, 1, 'Admin', '74'),
 (95, 3, 'User', '82'),
 (96, 1, 'Admin', '83'),
-(97, 1, 'Admin', '84');
+(97, 1, 'Admin', '84'),
+(98, 1, 'Admin', '63'),
+(99, 1, 'Admin', '85'),
+(100, 1, 'Admin', '86'),
+(101, 3, 'User', '87');
 
 -- --------------------------------------------------------
 
@@ -172,7 +176,8 @@ INSERT INTO `kategori` (`id_kategori`, `nama_kategori`) VALUES
 (2, 'Minuman'),
 (3, 'Sepinggan'),
 (4, 'Snack'),
-(5, 'Lain - Lain');
+(5, 'Lain - Lain'),
+(6, 'Paket Hemat');
 
 -- --------------------------------------------------------
 
@@ -242,7 +247,41 @@ INSERT INTO `listmenu` (`id_menu`, `nama_menu`, `harga`, `id_kategori`, `deskrip
 (46, 'Sambal Bawang', '2500', 5, '', '108file_25042021143846.jpg', 'ready'),
 (47, 'Telur', '3000', 5, '', '787file_25042021143819.jpg', 'ready'),
 (48, 'Nasi Putih', '3000', 5, '', '664file_25042021143758.jpeg', 'ready'),
-(49, 'Lontong', '2000', 5, '', '118file_25042021143704.jpg', 'ready');
+(49, 'Lontong', '2000', 5, '', '118file_25042021143704.jpg', 'ready'),
+(50, 'Nasi Ayam Penyet + Es Teh', '13000', 6, '', '959file_05052021165303.jpg', 'habis'),
+(51, 'Nasi Goreng Jawa + Es Teh', '13000', 6, '', '690file_05052021165314.jpg', 'ready'),
+(52, 'Nasi Tahu Telur + Es Teh', '13000', 6, '', '201file_05052021165445.jpeg', 'ready');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `lokasi`
+--
+
+CREATE TABLE `lokasi` (
+  `id_lokasi` int(11) NOT NULL,
+  `lokasi` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `lokasi`
+--
+
+INSERT INTO `lokasi` (`id_lokasi`, `lokasi`) VALUES
+(1, 'Fakultas teknik'),
+(2, 'Fakultas MIPA'),
+(3, 'Fakultas Psikologi'),
+(4, 'Fakultas Ilmu Sosial'),
+(5, 'Fakultas Ekonomi Bisnis'),
+(6, 'Fakultas Sastra'),
+(7, 'Fakultas Ilmu Keolahragaan '),
+(8, 'Fakultas Pendidikan'),
+(9, 'Pascasarjana'),
+(10, ' Rektorat UM'),
+(11, ' Sasana Budaya'),
+(12, ' Sasana Krida'),
+(13, ' Graha Cakrawala'),
+(14, ' Perpustakaan UM');
 
 -- --------------------------------------------------------
 
@@ -286,7 +325,32 @@ INSERT INTO `menu` (`id`, `name`, `link`, `deskrip`, `icon`, `is_active`, `is_pa
 (81, 'listmenu', 'admin/listmenu', 'hak akses', 'fa fa-laptop', 1, 40, 'link'),
 (82, 'checkout', 'web/checkout', 'hak akses', 'fa fa-laptop', 1, 0, 'link'),
 (83, 'Pesanan Tamu', 'admin/pesanantamu', 'fungsi data Pesanan Tamu', 'fa fa-pencil', 1, 0, 'menu'),
-(84, 'Laporan', 'admin/kas', 'Laporan Transaksi', 'fa fa-pencil', 1, 0, 'menu');
+(84, 'Laporan', 'admin/kas', 'Laporan Transaksi', 'fa fa-pencil', 1, 0, 'menu'),
+(85, 'lokasi', 'admin/lokasi', 'hak akses', 'fa fa-laptop', 1, 40, 'link'),
+(86, 'slider', 'admin/slider', 'hak akses', 'fa fa-laptop', 1, 40, 'link'),
+(87, 'logorder', 'web/logorder', 'hak akses', 'fa fa-laptop', 1, 0, 'link');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `notifikasi`
+--
+
+CREATE TABLE `notifikasi` (
+  `id_notifikasi` int(11) NOT NULL,
+  `id_order` int(11) NOT NULL,
+  `status` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `notifikasi`
+--
+
+INSERT INTO `notifikasi` (`id_notifikasi`, `id_order`, `status`) VALUES
+(1, 1, 'terkonfirmasi'),
+(2, 1, 'dikirim'),
+(3, 2, 'terkonfirmasi'),
+(4, 2, 'dikirim');
 
 -- --------------------------------------------------------
 
@@ -302,23 +366,23 @@ CREATE TABLE `order` (
   `bayar` varchar(100) NOT NULL,
   `date` date NOT NULL,
   `waktu` time NOT NULL,
-  `transaksi` enum('diterima','selesai') NOT NULL,
+  `transaksi` enum('terkonfirmasi','dikirim','diterima','selesai','') NOT NULL,
   `id_kasir` int(20) DEFAULT NULL,
   `nama_kasir` varchar(200) DEFAULT NULL,
   `metode` enum('tunai','debit') NOT NULL,
-  `status` enum('belum bayar','lunas') NOT NULL
+  `status` enum('belum bayar','lunas') NOT NULL,
+  `id_lokasi` int(11) DEFAULT NULL,
+  `lokasi` varchar(100) DEFAULT NULL,
+  `catatan` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `order`
 --
 
-INSERT INTO `order` (`id_order`, `id_user`, `diskon`, `total_harga`, `bayar`, `date`, `waktu`, `transaksi`, `id_kasir`, `nama_kasir`, `metode`, `status`) VALUES
-(4, '2', '', '11000', '11000', '2021-04-27', '12:51:48', 'diterima', 1, 'admin1', 'tunai', 'lunas'),
-(5, '2', '', '10000', '10000', '2021-04-27', '12:52:49', 'diterima', 1, 'admin1', 'tunai', 'lunas'),
-(6, '2', '', '0', '0', '2021-04-27', '12:59:02', 'diterima', 1, 'admin1', 'tunai', 'lunas'),
-(7, '2', '', '10000', '10000', '2021-04-27', '12:59:20', 'diterima', 1, 'admin1', 'tunai', 'lunas'),
-(8, '2', '', '11000', '11000', '2021-04-27', '13:06:36', 'diterima', 1, 'admin1', 'tunai', 'lunas');
+INSERT INTO `order` (`id_order`, `id_user`, `diskon`, `total_harga`, `bayar`, `date`, `waktu`, `transaksi`, `id_kasir`, `nama_kasir`, `metode`, `status`, `id_lokasi`, `lokasi`, `catatan`) VALUES
+(1, '2', '', '26000', '26000', '2021-05-05', '12:10:22', 'diterima', 1, 'admin1', 'tunai', 'lunas', 8, 'Fakultas Pendidikan', 'baik'),
+(2, '2', '', '13000', '13000', '2021-05-05', '12:39:04', 'dikirim', 1, 'admin1', 'tunai', 'lunas', 14, ' Perpustakaan UM', 'sdfsdf');
 
 -- --------------------------------------------------------
 
@@ -344,10 +408,30 @@ CREATE TABLE `order_detail` (
 --
 
 INSERT INTO `order_detail` (`id_order_detail`, `id_order`, `id_menu`, `nama_menu`, `id_kategori`, `nama_kategori`, `qty`, `harga`, `total_harga`, `gambar`) VALUES
-(3, 4, 8, 'Bakmi Gak Basah / Dibasahin', 1, 'Makanan', 1, 11000, 11000, '612file_25042021152157.jpg'),
-(4, 5, 3, 'Nasi Goreng DJ ( Daun Jeruk)', 1, 'Makanan', 1, 10000, 10000, '774file_25042021152640.jpg'),
-(5, 7, 2, 'Lele Penyet', 1, 'Makanan', 1, 10000, 10000, '158file_25042021152725.jpg'),
-(6, 8, 5, 'Nasi Goreng Millenial (Sambal Matah)', 1, 'Makanan', 1, 11000, 11000, '354file_25042021152432.jpg');
+(1, 1, 51, 'Nasi Goreng Jawa + Es Teh', 6, 'Paket Hemat', 1, 13000, 13000, '84file_05052021093232.jpg'),
+(2, 1, 50, 'Nasi Ayam Penyet + Es Teh', 6, 'Paket Hemat', 1, 13000, 13000, '221file_05052021092929.jpg'),
+(3, 2, 50, 'Nasi Ayam Penyet + Es Teh', 6, 'Paket Hemat', 1, 13000, 13000, '221file_05052021092929.jpg');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `slider`
+--
+
+CREATE TABLE `slider` (
+  `id_slider` int(11) NOT NULL,
+  `judul` varchar(100) NOT NULL,
+  `deskripsi` text NOT NULL,
+  `images` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `slider`
+--
+
+INSERT INTO `slider` (`id_slider`, `judul`, `deskripsi`, `images`) VALUES
+(1, 'Selamat datang', 'di website online delivery order Cafe Warna\r\nsilahkan pesan pada menu di bawah ini !', '199file_05052021131717.jpg'),
+(2, 'Selamat datang', 'di website online delivery order Cafe Warna <br>\r\nsilahkan pesan pada menu di bawah ini !', '162file_05052021131624.jpg');
 
 -- --------------------------------------------------------
 
@@ -482,6 +566,32 @@ CREATE TABLE `view_hk` (
 -- --------------------------------------------------------
 
 --
+-- Stand-in structure for view `view_notif`
+-- (See below for the actual view)
+--
+CREATE TABLE `view_notif` (
+`id_notifikasi` int(11)
+,`sts` varchar(100)
+,`id_order` int(20)
+,`id_user` varchar(100)
+,`diskon` varchar(100)
+,`total_harga` varchar(200)
+,`bayar` varchar(100)
+,`date` date
+,`waktu` time
+,`transaksi` enum('terkonfirmasi','dikirim','diterima','selesai','')
+,`id_kasir` int(20)
+,`nama_kasir` varchar(200)
+,`metode` enum('tunai','debit')
+,`status` enum('belum bayar','lunas')
+,`id_lokasi` int(11)
+,`lokasi` varchar(100)
+,`catatan` text
+);
+
+-- --------------------------------------------------------
+
+--
 -- Structure for view `view_akses`
 --
 DROP TABLE IF EXISTS `view_akses`;
@@ -505,6 +615,15 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 DROP TABLE IF EXISTS `view_hk`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_hk`  AS  select `users`.`id` AS `id`,`users`.`username` AS `username`,`auth_assignment`.`id_assignment` AS `id_assignment`,`auth_assignment`.`id_aunt` AS `id_aunt`,`auth_assignment`.`item_name` AS `item_name`,`auth_assignment`.`created_at` AS `created_at`,`auth_item_child`.`idc` AS `idc`,`auth_item_child`.`child` AS `child` from ((`auth_assignment` join `users` on(`users`.`id` = `auth_assignment`.`user_id`)) join `auth_item_child` on(`auth_item_child`.`id_aunt` = `auth_assignment`.`id_aunt`)) ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `view_notif`
+--
+DROP TABLE IF EXISTS `view_notif`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_notif`  AS  select `notifikasi`.`id_notifikasi` AS `id_notifikasi`,`notifikasi`.`status` AS `sts`,`order`.`id_order` AS `id_order`,`order`.`id_user` AS `id_user`,`order`.`diskon` AS `diskon`,`order`.`total_harga` AS `total_harga`,`order`.`bayar` AS `bayar`,`order`.`date` AS `date`,`order`.`waktu` AS `waktu`,`order`.`transaksi` AS `transaksi`,`order`.`id_kasir` AS `id_kasir`,`order`.`nama_kasir` AS `nama_kasir`,`order`.`metode` AS `metode`,`order`.`status` AS `status`,`order`.`id_lokasi` AS `id_lokasi`,`order`.`lokasi` AS `lokasi`,`order`.`catatan` AS `catatan` from (`order` join `notifikasi` on(`order`.`id_order` = `notifikasi`.`id_order`)) ;
 
 --
 -- Indexes for dumped tables
@@ -547,10 +666,22 @@ ALTER TABLE `listmenu`
   ADD PRIMARY KEY (`id_menu`);
 
 --
+-- Indexes for table `lokasi`
+--
+ALTER TABLE `lokasi`
+  ADD PRIMARY KEY (`id_lokasi`);
+
+--
 -- Indexes for table `menu`
 --
 ALTER TABLE `menu`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `notifikasi`
+--
+ALTER TABLE `notifikasi`
+  ADD PRIMARY KEY (`id_notifikasi`);
 
 --
 -- Indexes for table `order`
@@ -563,6 +694,12 @@ ALTER TABLE `order`
 --
 ALTER TABLE `order_detail`
   ADD PRIMARY KEY (`id_order_detail`);
+
+--
+-- Indexes for table `slider`
+--
+ALTER TABLE `slider`
+  ADD PRIMARY KEY (`id_slider`);
 
 --
 -- Indexes for table `tema`
@@ -602,7 +739,7 @@ ALTER TABLE `auth_item`
 -- AUTO_INCREMENT for table `auth_item_child`
 --
 ALTER TABLE `auth_item_child`
-  MODIFY `idc` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98;
+  MODIFY `idc` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
 
 --
 -- AUTO_INCREMENT for table `info`
@@ -614,31 +751,49 @@ ALTER TABLE `info`
 -- AUTO_INCREMENT for table `kategori`
 --
 ALTER TABLE `kategori`
-  MODIFY `id_kategori` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_kategori` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `listmenu`
 --
 ALTER TABLE `listmenu`
-  MODIFY `id_menu` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `id_menu` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+
+--
+-- AUTO_INCREMENT for table `lokasi`
+--
+ALTER TABLE `lokasi`
+  MODIFY `id_lokasi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
+
+--
+-- AUTO_INCREMENT for table `notifikasi`
+--
+ALTER TABLE `notifikasi`
+  MODIFY `id_notifikasi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `order`
 --
 ALTER TABLE `order`
-  MODIFY `id_order` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_order` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `order_detail`
 --
 ALTER TABLE `order_detail`
-  MODIFY `id_order_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_order_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `slider`
+--
+ALTER TABLE `slider`
+  MODIFY `id_slider` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tema`

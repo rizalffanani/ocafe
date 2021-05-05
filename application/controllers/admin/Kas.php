@@ -10,6 +10,7 @@ class Kas extends CI_Controller
         parent::__construct();
         $this->load->model('Kas_model');
         $this->load->model('Order_model');
+        $this->load->model('Web_model');
         $this->load->library('form_validation');        
 	    $this->load->library('datatables');
     }
@@ -30,6 +31,7 @@ class Kas extends CI_Controller
         header('Content-Type: application/json');
         echo $this->Kas_model->json($i);
     }
+
     public function read($id) 
     {
         $this->load->model('Web_model');
@@ -58,7 +60,17 @@ class Kas extends CI_Controller
         }
     }
 
+    public function update($id,$status) 
+    {
+        $data = array(
+            'transaksi' => $status,
+        );
 
+        $this->Order_model->update($id, $data);
+        $datas = array('id_order' => $id, 'status' => $status);
+        $this->Web_model->insertall("notifikasi",$datas);
+        redirect(site_url('admin/kas'));
+    }
 }
 
 /* End of file Kas.php */

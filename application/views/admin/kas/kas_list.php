@@ -19,16 +19,30 @@
         		    <th>Tanggal</th>
                     <th>Keterangan</th>
         		    <th>Total</th>
+                    <th>Status</th>
         		    <th width="200px">Action</th>
                 </tr>
             </thead>
 	        <tbody>
-                <?php $i=0;foreach ($dats as $key => $value) {?>
+                <?php $i=1;foreach ($dats as $key => $value) {?>
                 <tr>
                     <td><?= $i?></td>
                     <td><?= $value->date?></td>
                     <td>Transaksi Order <?= $value->id_user?></td>
                     <td><?= "Rp.".rupiah($value->total_harga)?></td>
+                    <td>
+                        <?php
+                            if ($value->transaksi=="terkonfirmasi") {
+                                echo(anchor(site_url('admin/kas/update/'.$value->id_order.'/'.'dikirim'),'dikirim'));
+                            }
+                            if ($value->transaksi=="dikirim") {
+                                echo(anchor(site_url('admin/kas/update/'.$value->id_order.'/'.'diterima'),'diterima'));
+                            }
+                            if ($value->transaksi=="diterima") {
+                                echo('selesai');
+                            }
+                        ?>
+                    </td>
                     <td><?= 
                         anchor(site_url('admin/kas/read/'.$value->id_order),'Read')
                     ?></td>

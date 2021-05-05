@@ -14,12 +14,15 @@
               <style>
               /* Make the image fully responsive */
               .carousel-caption{
+                background: #faebd796;
                 position: absolute;
-                right: 20%;
+                height: 150px;
+                width: 400px;
+                left: 55%;
                 top: 8%;
                 z-index: 10;
-                padding-top: 20px;
-                padding-bottom: 20px;
+                padding: 20px;
+                border-radius:10px;
                 color: black;
                 text-align: right;
               }
@@ -75,9 +78,12 @@
                                         <div class="text-center" style="height: 50px">
                                           <a href="#"><h5 style="color: black"><?php echo ($value->nama_menu)?></h5></a>
                                         </div>
-
-                                        <!-- <p class="text-muted text-center"><?php echo ($value->deskripsi_menu)?></p> -->
-
+                                        <?php if($value->id_kategori==9){?>
+                                        <p style="position: absolute;z-index: 4;top: -90%;background: #17a2b8!important;color: white;padding: 4px;border-radius: 15px;">
+                                          Promo cuma<br>
+                                          Rp.<?php echo ($value->harga)?>
+                                        </p>
+                                        <?php }?>
                                         <ul class="list-group list-group-unbordered mb-3">
                                           <li class="list-group-item">
                                             <b>Harga</b> <a class="float-right">Rp.<?php echo rupiah($value->harga)?></a>

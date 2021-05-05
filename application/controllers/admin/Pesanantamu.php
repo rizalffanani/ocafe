@@ -53,9 +53,12 @@ class Pesanantamu extends CI_Controller
                 'total_harga' => $this->input->post('total',TRUE),
                 'bayar' => $this->input->post('bayar',TRUE),
                 'status' => 'lunas',
+                'transaksi' => 'terkonfirmasi',
             );
 
             $this->Order_model->update($id, $data);
+            $datas = array('id_order' => $id, 'status' => 'terkonfirmasi');
+            $this->Web_model->insertall("notifikasi",$datas);
             $this->session->set_flashdata('message', 'Update Record Success');
             redirect(site_url('admin/pesanantamu'));
         }

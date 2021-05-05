@@ -2,6 +2,9 @@
 <?php 
   $infoweb=$this->db->get_where('info', array('id_info' => '1'))->row();
   $tema=$this->db->get_where('tema', array('id_tema' => '1'))->row();
+  if($this->session->userdata("id")){
+    $tema=$this->db->order_by('id_notifikasi', 'DESC')->get_where('view_notif', array('id_user' => $this->session->userdata("id")))->result();
+  }
 ?>
 <!--
 This is a starter template page. Use this page to start your new project from
@@ -54,32 +57,55 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <li class="nav-item">
             <a href="<?php echo site_url('login') ?>" class="nav-link">Login</a>
           </li>
+          <li class="nav-item">
+            <a href="<?php echo site_url('login/regis') ?>" class="nav-link">Registrasi</a>
+          </li>
           <?php }else{?>
+          <li class="nav-item">
+            <a href="<?php echo site_url('web/logorder') ?>" class="nav-link">Riwayat Pesanan</a>
+          </li>
           <li class="nav-item">
             <a href="<?php echo site_url('login/logout') ?>" class="nav-link">Logout</a>
           </li>
           <?php }?>
-          <li class="nav-item">
-            <a href="<?php echo site_url('login/regis') ?>" class="nav-link">Registrasi</a>
-          </li>
         </ul>
 
         <!-- SEARCH FORM -->
-        <!-- <form class="form-inline ml-0 ml-md-3">
+        <form class="form-inline ml-0 ml-md-3" action="<?= base_url(); ?>web/search" method="post">
           <div class="input-group input-group-sm">
-            <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+            <input class="form-control form-control-navbar" type="search" name="keyword" placeholder="Search" aria-label="Search">
             <div class="input-group-append">
               <button class="btn btn-navbar" type="submit">
                 <i class="fas fa-search"></i>
               </button>
             </div>
           </div>
-        </form> -->
+        </form>
       </div>
 
       <!-- Right navbar links -->
       <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
         <!-- Notifications Dropdown Menu -->
+        <?php if($this->session->userdata("id")){?>
+        <li class="nav-item dropdown">
+          <a class="nav-link" data-toggle="dropdown" href="#">
+            <i class="far fa-bell"></i>
+            <span class="badge badge-warning navbar-badge"><?= count($tema);?></span>
+          </a>
+          <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+            <!-- <span class="dropdown-header">15 Notifications</span>
+            <div class="dropdown-divider"></div> -->
+            <?php foreach($tema as $key) : ?>
+            <a href="#" class="dropdown-item">
+              <i class="fas fa-shopping-cart mr-2"></i> Orderan #<?= $key->id_order?>
+              <span class="float-right text-muted text-sm"><?= $key->sts?></span>
+            </a>
+            <div class="dropdown-divider"></div>
+            <?php endforeach; ?>            
+            <!-- <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a> -->
+          </div>
+        </li>
+        <?php }?>
         <li class="nav-item dropdown">
           <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#">
             <i class="fas fa-shopping-cart"></i>

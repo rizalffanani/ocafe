@@ -47,6 +47,13 @@ class Order_model extends CI_Model
         return $this->db->get($this->table)->result();
     }
 
+    function get_all_where_id($id)
+    {
+        $this->db->order_by($this->id, "DESC");
+        $this->db->where("id_user", $id);
+        return $this->db->get($this->table)->result();
+    }
+
     // get data by id
     function get_by_id($id)
     {

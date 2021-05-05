@@ -22,6 +22,7 @@ class Web_model extends CI_Model
 
     function get_all_kategori()
     {
+        $this->db->order_by("id_kategori", "DESC");
         return $this->db->get("kategori")->result();
     }
     
@@ -56,6 +57,14 @@ class Web_model extends CI_Model
     function get_all_user()
     {
         return $this->db->get("user")->result();
+    }
+
+    function get_product_keyword($keyword){
+        $this->db->select('*');
+        $this->db->from('listmenu');
+        $this->db->like('nama_menu',$keyword);
+        $this->db->or_like('harga',$keyword);
+        return $this->db->get()->result();
     }
 
     function insert($data){

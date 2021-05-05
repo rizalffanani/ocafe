@@ -117,6 +117,7 @@ class Web extends CI_Controller
                     'waktu' => date("H:i:s"),
                     'bayar' => 0,
                     'id_lokasi' => 0,
+                    'transaksi' => "",
                 );
                 $table="order";
                 $this->Web_model->insertall($table,$data);
@@ -176,6 +177,24 @@ class Web extends CI_Controller
             $this->session->set_flashdata('message', 'Update Record Success');
             redirect(site_url('web/checkout/'.$this->input->post('id', TRUE)));
         }
+    }
+
+    public function logorder()
+    {
+        $this->authclass->check_isvalidated(base_url().'login');
+        $this->load->model('Order_model');
+        $das = $this->Order_model->get_all_where_id($this->session->userdata("id"));
+        $data = array(
+            'title' => 'Riwayat Pesanan',
+            'dats'=>$das,
+        );
+        $this->template->load('front','frontend/riwayat', $data);
+    } 
+
+    public function search(){
+        $keyword = $this->input->post('keyword');
+        $data['products']=$this->Web_model->get_product_keyword($keyword);
+        $this->template->load('front','frontend/search', $data);
     }
 
     public function _rules() 

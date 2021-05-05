@@ -51,19 +51,23 @@
                   </table>
                   <?php if($row->id_lokasi==0){?>
                   <form action="<?php echo site_url('web/konfirm'); ?>" method="post" class="row">
-                    <div class="col-sm-6">
-                      <!-- radio -->
-                      <div class="form-group">
-                        <label>Lokasi</label>
-                        <?php foreach ($lok as $key => $value) {?>
+                    <?php $lk = count($lok)/2; $i=0; foreach ($lok as $key => $value) { ?>
+                      <?php if($i==0 || $i==$lk){?>
+                      <div class="col-sm-4">
+                        <div class="form-group">
+                          <label>Lokasi</label>
+                      <?php }?>
                         <div class="custom-control custom-radio">
                           <input class="custom-control-input" type="radio" id="customRadio<?= $value->id_lokasi?>" name="lokasi" value="<?= $value->id_lokasi?>/<?= $value->lokasi?>">
                           <label for="customRadio<?= $value->id_lokasi?>" class="custom-control-label"><?= $value->lokasi?></label>
                         </div>
-                        <?php }?>
+
+                        <?php if($i==($lk-1) || $i==(count($lok)-1)) {?>
+                        </div>
                       </div>
-                    </div>
-                    <div class="col-sm-6">
+                      <?php }?>
+                    <?php $i++;}?>
+                    <div class="col-sm-4">
                       <div class="form-group">
                         <label>Catatan Singkat</label>
                         <textarea class="form-control" name="catatan" rows="3" placeholder="Enter ..."></textarea>
